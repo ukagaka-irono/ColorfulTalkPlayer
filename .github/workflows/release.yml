@@ -1,0 +1,59 @@
+# タグ（v*）を push すると、Windows のインストーラーと Mac の dmg を作ってリリースに添付する
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            args: "--bundles nsis"
+          - os: macos-latest
+            args: "--target universal-apple-darwin --bundles app,dmg"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.os == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+      - name: 辞書を取得
+        shell: bash
+        run: bash scripts/fetch-dic.sh
+      - run: npm ci
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
+          releaseName: "ColorfulTalkPlayer __VERSION__"
+          releaseBody: |
+            ColorfulTalk の公式読み上げアプリです。Web 版と同じ画面で、文章の読み上げ・WAV 保存・コマンドラインからの WAV 出力ができます。
+            Web 版（インストール不要）: https://ukagaka-irono.github.io/ColorfulTalkPlayer/
+
+            | ファイル | 対象 |
+            |---|---|
+            | `ColorfulTalkPlayer_*_x64-setup.exe` | Windows 10 / 11（64bit）のインストーラー |
+            | `ColorfulTalkPlayer_*_universal.dmg` | macOS（Apple シリコン・Intel） |
+
+            - 署名をしていないため、Windows では「Windows によって PC が保護されました」と出ることがあります（「詳細情報」→「実行」）。
+              macOS では初回に Finder でアプリを右クリック →「開く」で起動してください
+            - 中のエンジン: V3 3.0.0、V2 2.0.0、V1 1.0.0、nano 1.0.0、ColorfulYomi 1.0.0、辞書 Colorful-dictionary 版 1（BSD 3-Clause）
+            - ライセンス: MIT License（辞書は BSD 3-Clause）
+          releaseDraft: false
+          prerelease: false
+          args: ${{ matrix.args }}
