@@ -16,6 +16,8 @@
 
 **Web 版はこちら: https://ukagaka-irono.github.io/ColorfulTalkPlayer/** （インストール不要。初回は辞書 26MB を読み込みます）
 
+**Windows / Mac 版のダウンロード: [リリース 1.0.0](https://github.com/ukagaka-irono/ColorfulTalkPlayer/releases/tag/v1.0.0)**（Windows はインストーラー、Mac は dmg。署名していないため初回に警告が出ます）
+
 詳しくは [docs/spec.md](docs/spec.md) を参照してください。
 
 ## Web 版を動かす
