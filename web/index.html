@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ColorfulTalkPlayer</title>
+<meta name="description" content="無料の日本語音声合成 ColorfulTalk の読み上げアプリ。音声はブラウザの中で作り、外部に送りません。">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <img src="icon.svg" alt="" width="32" height="32">
+    <div>
+      <h1>ColorfulTalkPlayer</h1>
+      <p class="sub">無料の日本語音声合成。音声はこの端末の中で作り、外部に送りません。</p>
+    </div>
+  </div>
+  <p id="dic-status" class="status" role="status">準備しています…</p>
+</header>
+
+<main class="layout">
+  <section class="card text-card" aria-labelledby="h-text">
+    <div class="card-head">
+      <h2 id="h-text">読み上げる文章</h2>
+      <div class="seg" role="radiogroup" aria-label="入力の種類">
+        <label><input type="radio" name="mode" value="text" checked> 文章</label>
+        <label><input type="radio" name="mode" value="koe"> 記号列</label>
+      </div>
+    </div>
+    <textarea id="text" rows="7" spellcheck="false">こんにちは。カラフルトークプレイヤーへようこそ。
+今日はいい天気ですね。</textarea>
+    <p id="text-hint" class="hint">漢字かな交じり文を入力してください。長い文章は文ごとに区切って、間を入れて読みます。</p>
+
+    <div class="actions">
+      <button id="play" class="primary" type="button">▶ 読み上げ</button>
+      <button id="stop" type="button" disabled>■ 止める</button>
+      <button id="save" type="button">WAV で保存</button>
+      <button id="convert" type="button">記号列を見る</button>
+    </div>
+    <p id="message" class="message" role="alert" hidden></p>
+
+    <div id="koe-box" class="koe-box" hidden>
+      <label for="koe">記号列（直してから読み上げられます）</label>
+      <textarea id="koe" rows="4" spellcheck="false"></textarea>
+      <div class="actions">
+        <button id="play-koe" type="button">▶ この記号列で読み上げ</button>
+        <button id="use-koe" type="button">入力欄に移す</button>
+      </div>
+      <p class="hint">' はアクセントの下がり目、/ は句の区切りです。書き方は
+        <a href="https://github.com/ukagaka-irono/ColorfulTalk/blob/main/docs/spec/koe-kana.md" target="_blank" rel="noopener">カナ記号列</a> /
+        <a href="https://github.com/ukagaka-irono/ColorfulTalk/blob/main/docs/spec/koe-roman.md" target="_blank" rel="noopener">ローマ字記号列（nano）</a>。</p>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="h-voice">
+    <h2 id="h-voice">声</h2>
+    <div class="grid2">
+      <label class="field">エンジン
+        <select id="engine"></select>
+      </label>
+      <label class="field">声
+        <select id="voice"></select>
+      </label>
+    </div>
+    <p id="engine-note" class="hint"></p>
+
+    <div id="sliders" class="sliders"></div>
+
+    <div class="grid2">
+      <label class="field" id="rate-field">サンプリング周波数（V3）
+        <select id="rate">
+          <option value="8000">8kHz</option>
+          <option value="16000" selected>16kHz</option>
+          <option value="22050">22.05kHz</option>
+          <option value="44100">44.1kHz</option>
+          <option value="48000">48kHz</option>
+        </select>
+      </label>
+      <label class="field">WAV の周波数
+        <select id="out-rate">
+          <option value="0" selected>エンジンのまま</option>
+          <option value="44100">44.1kHz に変換</option>
+          <option value="48000">48kHz に変換</option>
+        </select>
+      </label>
+    </div>
+
+    <h3>プリセット</h3>
+    <div class="preset-row">
+      <select id="preset" aria-label="保存したプリセット"><option value="">（保存したプリセット）</option></select>
+      <button id="preset-save" type="button">今の設定を保存</button>
+      <button id="preset-delete" type="button">削除</button>
+      <button id="reset" type="button">初期値に戻す</button>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="h-user">
+    <h2 id="h-user">ユーザー辞書</h2>
+    <p class="hint">読み間違える言葉の読みとアクセントを登録します。この端末に保存されます。</p>
+    <form id="user-form" class="user-form">
+      <label class="field">表記<input id="u-surface" required placeholder="ColorfulTalk"></label>
+      <label class="field">読み（カタカナ）<input id="u-reading" required placeholder="カラフルトーク"></label>
+      <label class="field small">アクセント<input id="u-accent" type="number" min="0" max="30" value="0" required></label>
+      <label class="field">品詞
+        <select id="u-pos">
+          <option>名詞</option><option>固有名詞</option><option>人名</option><option>地名</option>
+          <option>組織</option><option>サ変名詞</option><option>感動詞</option>
+        </select>
+      </label>
+      <button type="submit">登録</button>
+    </form>
+    <p class="hint">アクセントは下がり目の位置です（0 = 下がらない、1 = 1 文字目の後、カラフルト'ーク なら 5）。</p>
+    <table class="user-table">
+      <thead><tr><th>表記</th><th>読み</th><th>アクセント</th><th>品詞</th><th></th></tr></thead>
+      <tbody id="user-list"></tbody>
+    </table>
+  </section>
+</main>
+
+<footer class="foot">
+  <p><span id="version"></span> ・ <a href="https://github.com/ukagaka-irono/ColorfulTalkPlayer" target="_blank" rel="noopener">ソースコード</a>（MIT License）・
+    辞書: <a href="https://github.com/ukagaka-irono/Colorful-dictionary" target="_blank" rel="noopener">Colorful-dictionary</a>（BSD 3-Clause、mecab-naist-jdic より）</p>
+  <p id="dic-pick" hidden>辞書を読み込めませんでした。<label class="linkish">colorful_talk.dic を選ぶ<input id="dic-file" type="file" accept=".dic" hidden></label>
+    （<a href="https://github.com/ukagaka-irono/Colorful-dictionary/releases/tag/v1" target="_blank" rel="noopener">ダウンロード</a>）。記号列の入力は辞書なしでも使えます。</p>
+</footer>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "name": "colorful-talk-player",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ColorfulTalk の公式読み上げアプリ（Web 版・Windows / Mac 版）",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build:wasm": "bash scripts/build-wasm.sh",
+    "fetch:dic": "bash scripts/fetch-dic.sh",
+    "test": "bash scripts/build-wasm.sh --node tests/build/player-core-node.mjs && node tests/core_test.mjs",
+    "serve": "python -m http.server 8710 -d web",
+    "tauri": "tauri"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.0.0"
+  }
+}

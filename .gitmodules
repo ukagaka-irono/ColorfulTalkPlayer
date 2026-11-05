@@ -1,0 +1,15 @@
+[submodule "engines/ColorfulTalk-V1"]
+	path = engines/ColorfulTalk-V1
+	url = https://github.com/ukagaka-irono/ColorfulTalk-V1.git
+[submodule "engines/ColorfulTalk-V2"]
+	path = engines/ColorfulTalk-V2
+	url = https://github.com/ukagaka-irono/ColorfulTalk-V2.git
+[submodule "engines/ColorfulTalk-V3"]
+	path = engines/ColorfulTalk-V3
+	url = https://github.com/ukagaka-irono/ColorfulTalk-V3.git
+[submodule "engines/ColorfulTalk-nano"]
+	path = engines/ColorfulTalk-nano
+	url = https://github.com/ukagaka-irono/ColorfulTalk-nano.git
+[submodule "engines/ColorfulYomi"]
+	path = engines/ColorfulYomi
+	url = https://github.com/ukagaka-irono/ColorfulYomi.git
