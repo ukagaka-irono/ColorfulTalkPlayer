@@ -14,8 +14,8 @@ sum() { if command -v sha256sum >/dev/null; then sha256sum "$1" | cut -d' ' -f1;
 
 mkdir -p web/dic
 if [ -f "$OUT" ] && [ "$(sum "$OUT")" = "$SHA" ]; then echo "$OUT は最新です"; exit 0; fi
-if [ $# -ge 1 ]; then cp "$1" "$OUT.tmp"; else curl -fL -o "$OUT.tmp" "$URL"; fi
+if [ $# -ge 1 ]; then cp "$1" "$OUT.tmp"; else curl -fL --retry 5 --retry-all-errors --retry-delay 5 -o "$OUT.tmp" "$URL"; fi
 if [ "$(sum "$OUT.tmp")" != "$SHA" ]; then rm -f "$OUT.tmp"; echo "SHA-256 が一致しません" >&2; exit 1; fi
 mv "$OUT.tmp" "$OUT"
-curl -fsL -o web/dic/NOTICE https://github.com/ukagaka-irono/Colorful-dictionary/releases/download/v1/NOTICE || true
+curl -fsL --retry 5 --retry-all-errors -o web/dic/NOTICE https://github.com/ukagaka-irono/Colorful-dictionary/releases/download/v1/NOTICE || true
 echo "$OUT を置きました"
