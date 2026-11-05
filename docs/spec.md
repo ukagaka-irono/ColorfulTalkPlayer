@@ -8,7 +8,7 @@ ColorfulTalk の音声合成エンジンを使った公式アプリです。文�
 
 | 種類 | 作り方 | 特長 |
 |---|---|---|
-| ColorfulTalkPlayer Web | 全エンジンと ColorfulYomi を 1 つの WebAssembly（約 140KB）にして、ブラウザだけで動かす | インストール不要。音声はブラウザの中で作り、外部に送らない |
+| ColorfulTalkPlayer Web | 全エンジンと ColorfulYomi を 1 つの WebAssembly（約 140KB）にして、ブラウザだけで動かす。[https://ukagaka-irono.github.io/ColorfulTalkPlayer/](https://ukagaka-irono.github.io/ColorfulTalkPlayer/) で公開（GitHub Pages、main を更新すると自動で公開し直す） | インストール不要。音声はブラウザの中で作り、外部に送らない |
 | Windows / Mac 版 | Web 版と同じ画面を Tauri 2 で包む。エンジンと辞書を実行ファイルに組み込む | 保存先を選んで WAV を保存、コマンドラインからの読み上げ・WAV 出力 |
 
 版は 1.0.0。中のエンジンは V3 3.0.0、V2 2.0.0、V1 1.0.0、nano 1.0.0、ColorfulYomi 1.0.0（`engines/` のサブモジュール）。

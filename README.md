@@ -14,6 +14,8 @@
 | Web 版 | ブラウザだけで動く。全エンジンと ColorfulYomi を 1 つの WebAssembly（約 140KB）にしたもの |
 | Windows / Mac 版 | Web 版と同じ画面のデスクトップアプリ（Tauri）。保存先を選んで WAV を保存、コマンドラインからの読み上げ・WAV 出力 |
 
+**Web 版はこちら: https://ukagaka-irono.github.io/ColorfulTalkPlayer/** （インストール不要。初回は辞書 26MB を読み込みます）
+
 詳しくは [docs/spec.md](docs/spec.md) を参照してください。
 
 ## Web 版を動かす
