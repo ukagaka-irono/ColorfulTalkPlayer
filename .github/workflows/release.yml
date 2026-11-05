@@ -33,7 +33,11 @@ jobs:
           targets: ${{ matrix.os == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
       - name: 辞書を取得
         shell: bash
-        run: bash scripts/fetch-dic.sh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download v1 --repo ukagaka-irono/Colorful-dictionary --pattern colorful_talk.dic --dir dl
+          bash scripts/fetch-dic.sh dl/colorful_talk.dic
       - run: npm ci
       - uses: tauri-apps/tauri-action@v0
         env:
